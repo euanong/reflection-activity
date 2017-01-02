@@ -35,20 +35,16 @@ function SymmetryDot(stage,clickable,x,y,radius,colours,index,game){
 	this.showSmile = function(){
 		var s = new createjs.Shape();
 		var g = s.graphics;
-		//Head
 		var scale = 150;
 		g.setStrokeStyle(10/scale*this.radius, 'round', 'round');
 		g.beginStroke("#000");
 		g.beginFill("#FC0");
-		g.drawCircle(0, 0, 100/scale*this.radius); //55,53
-		//Mouth
-		g.beginFill(); // no fill
+		g.drawCircle(0, 0, 100/scale*this.radius);
+		g.beginFill();
 		g.arc(0, 0, 60/scale*this.radius, 0, Math.PI);
-		//Right eye
-		g.beginStroke(); // no stroke
+		g.beginStroke();
 		g.beginFill("#000");
 		g.drawCircle(-30/scale*this.radius, -30/scale*this.radius, 15/scale*this.radius);
-		//Left eye
 		g.drawCircle(30/scale*this.radius, -30/scale*this.radius, 15/scale*this.radius);
 		s.x = this.circle.x;
 		s.y = this.circle.y;

@@ -7,11 +7,13 @@ function Game(stage,xocolor,doc){
 	this.circlesheight = 0;
 	this.radius = 0;
 	console.log(xocolor);
-	this.colours = ["#FFFFFF","#000000",xocolor.fill,xocolor.stroke];
 	this.verticalline = null;
 	this.horizontalline = null;
 	this.mode = null;
 	this.dotsarr = [];
+	this.buddy = ["#FFFFFF","#000000",xocolor.fill,xocolor.stroke];
+	this.rainbow = ['#FFFFFF','#000000','#FF0000','#FF8000','#FFFF00','#00FF00','#00FFFF','#0000FF','#FF00FF'];
+	this.colours = this.buddy;
 	//0 = horizontal, 1 = vertical, 2 = bilateral
 
 	this.radiusFromX = function(){
@@ -86,6 +88,36 @@ function Game(stage,xocolor,doc){
 		this.addVerticalLine();
 		this.mode = 2;
 		this.initDots();
+	}
+
+	this.initBuddy = function(){
+		this.colours = this.buddy;
+		switch(this.mode) {
+			case 0:
+				this.initHorizontalGame();
+				break;
+			case 1:
+				this.initVerticalGame();
+				break;
+			case 2:
+				this.initBilateralGame();
+				break;
+		}
+	}
+
+	this.initRainbow = function(){
+		this.colours = this.rainbow;
+		switch(this.mode) {
+			case 0:
+				this.initHorizontalGame();
+				break;
+			case 1:
+				this.initVerticalGame();
+				break;
+			case 2:
+				this.initBilateralGame();
+				break;
+		}
 	}
 
 	this.initDots = function(){

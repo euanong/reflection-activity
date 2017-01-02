@@ -44,6 +44,16 @@ function runactivity(act,doc,colors,env,datastore){
 	    }
 	    g = new Game(stage,colors,doc);
 	    g.init();
+	    var buddyButton = doc.getElementById("buddy-button");
+        	buddyButton.addEventListener('click', function (a) {
+            stage.removeAllChildren();
+            g.initBuddy();
+        });
+        var rainbowButton = doc.getElementById("rainbow-button");
+        	rainbowButton.addEventListener('click', function (a) {
+            stage.removeAllChildren();
+            g.initRainbow();
+        });
 	    var horizontalButton = doc.getElementById("horizontal-button");
         	horizontalButton.addEventListener('click', function (a) {
             stage.removeAllChildren();
