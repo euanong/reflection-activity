@@ -1,4 +1,4 @@
-function SymmetryDot(stage,clickable,x,y,radius,colours,index,game){
+function SymmetryDot(stage,clickable,x,y,radius,colours,index,game,xpos,ypos){
 	this.clickable = clickable;
 	this.colour = index;
 	this.colours = colours;
@@ -18,6 +18,11 @@ function SymmetryDot(stage,clickable,x,y,radius,colours,index,game){
 		}
 	}
 
+	this.setColour = function(index){
+		this.circle.graphics.clear().beginFill(this.colours[index]).drawCircle(0,0,this.radius).endFill();
+		this.colour = index;
+	}
+
 	this.setClickListener = function(){
 		var c = this.circle;
 		var d = this;
@@ -26,7 +31,10 @@ function SymmetryDot(stage,clickable,x,y,radius,colours,index,game){
 			if (d.clickable==true){
 				d.getNewColour();
 				console.log(d.colours[d.colour]);
-				c.graphics.clear().beginFill(d.colours[d.colour]).drawCircle(0,0,d.radius).endFill();
+				d.setColour(d.colour);
+				if (g.robot){
+					g.robotColours(xpos,ypos,d.colour);
+				}
 				g.checkColours();
 			}
 		});

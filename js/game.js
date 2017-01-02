@@ -14,6 +14,7 @@ function Game(stage,xocolor,doc){
 	this.buddy = ["#FFFFFF","#000000",xocolor.fill,xocolor.stroke];
 	this.rainbow = ['#FFFFFF','#000000','#FF0000','#FF8000','#FFFF00','#00FF00','#00FFFF','#0000FF','#FF00FF'];
 	this.colours = this.buddy;
+	this.robot = false;
 	//0 = horizontal, 1 = vertical, 2 = bilateral
 
 	this.radiusFromX = function(){
@@ -124,15 +125,20 @@ function Game(stage,xocolor,doc){
 		this.dotsarr = [];
 		var temparr = [];
 		var incr = (this.radius*2+this.margin);
+		var xp = 0;
+		var yp = 0;
 		for (var x = (stage.canvas.width-this.circleswidth)/2+this.margin; x<(stage.canvas.width+this.circleswidth)/2; x+=incr){
 			temparr = [];
+			yp = 0;
 			for (var y = this.margin; y<this.circlesheight-this.margin; y+=incr){
-				var s = new SymmetryDot(stage,true,x+this.radius,y+this.radius,this.radius,this.colours,Math.floor(Math.random()*this.colours.length),this);
+				var s = new SymmetryDot(stage,true,x+this.radius,y+this.radius,this.radius,this.colours,Math.floor(Math.random()*this.colours.length),this,xp,yp);
 				s.init();
 				temparr.push(s);
 				//console.log(s);
+				yp++;
 			}
 			this.dotsarr.push(temparr);
+			xp++;
 		}
 		console.log(this.dotsarr);
 	}
@@ -208,6 +214,56 @@ function Game(stage,xocolor,doc){
 				this.checkBilateralGame();
 				break;
 		}
+	}
+
+	this.robotOff = function(){
+		var robo = doc.getElementById("robot-button");
+		robo.title="Turn on the Robot";
+		robo.style.backgroundImage = "url('./icons/robot-off.svg')";
+		this.robot = false;
+	}
+
+	this.robotOn = function(){
+		var robo = doc.getElementById("robot-button");
+		robo.title="Turn off the Robot";
+		robo.style.backgroundImage = "url('./icons/robot-on.svg')";
+		this.robot = true;
+	}
+
+	this.toggleRobot = function(){
+		if (this.robot){
+			this.robotOff();
+		} else {
+			this.robotOn();
+		}
+	}
+
+	this.robotColours = function(x,y,index){
+		switch(this.mode) {
+			case 0:
+				this.horizontalColour(x,y,index);
+				break;
+			case 1:
+				this.verticalColour(x,y,index);
+				break;
+			case 2:
+				this.bilateralColour(x,y,index);
+				break;
+		}
+	}
+
+	this.horizontalColour = function(x,y,index){
+		this.dotsarr[(this.gridwidth-1)-x][y].setColour(index);
+	}
+
+	this.verticalColour = function(x,y,index){
+		this.dotsarr[x][(this.gridheight-1)-y].setColour(index);
+	}
+
+	this.bilateralColour = function(x,y,index){
+		this.dotsarr[(this.gridwidth-1)-x][y].setColour(index);
+		this.dotsarr[x][(this.gridheight-1)-y].setColour(index);
+		this.dotsarr[(this.gridwidth-1)-x][(this.gridheight-1)-y].setColour(index);
 	}
 
 	this.init = function(){

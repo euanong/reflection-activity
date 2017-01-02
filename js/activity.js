@@ -69,6 +69,10 @@ function runactivity(act,doc,colors,env,datastore){
             stage.removeAllChildren();
             g.initBilateralGame();
         });
+        var robotButton = doc.getElementById("robot-button");
+        	robotButton.addEventListener('click', function (a) {
+            g.toggleRobot();
+        });
 	}
     init();
 }

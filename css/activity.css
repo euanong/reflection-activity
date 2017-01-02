@@ -21,3 +21,7 @@
 #bilateral-button {
   background-image: url(../icons/new-game-bilateral.svg);
 }
+
+#robot-button {
+  background-image: url(../icons/robot-off.svg);
+}
