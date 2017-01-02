@@ -3,10 +3,14 @@
 }
 
 
-#save-button {
-  background-image: url(../icons/save-colors.svg);
+#horizontal-button {
+  background-image: url(../icons/new-game-horizontal.svg);
 }
 
-#reset-button {
-  background-image: url(../icons/clear-button.svg);
+#vertical-button {
+  background-image: url(../icons/new-game-vertical.svg);
+}
+
+#bilateral-button {
+  background-image: url(../icons/new-game-bilateral.svg);
 }

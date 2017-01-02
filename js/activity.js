@@ -44,6 +44,21 @@ function runactivity(act,doc,colors,env,datastore){
 	    }
 	    g = new Game(stage,colors,doc);
 	    g.init();
+	    var horizontalButton = doc.getElementById("horizontal-button");
+        	horizontalButton.addEventListener('click', function (a) {
+            stage.removeAllChildren();
+            g.initHorizontalGame();
+        });
+        var verticalButton = doc.getElementById("vertical-button");
+        	verticalButton.addEventListener('click', function (a) {
+            stage.removeAllChildren();
+            g.initVerticalGame();
+        });
+        var bilateralButton = doc.getElementById("bilateral-button");
+        	bilateralButton.addEventListener('click', function (a) {
+            stage.removeAllChildren();
+            g.initBilateralGame();
+        });
 	}
     init();
 }

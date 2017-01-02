@@ -73,6 +73,21 @@ function Game(stage,xocolor,doc){
 		this.initDots();
 	}
 
+	this.initVerticalGame = function(){
+		this.removeLines();
+		this.addHorizontalLine();
+		this.mode = 1;
+		this.initDots();
+	}
+
+	this.initBilateralGame = function(){
+		this.removeLines();
+		this.addHorizontalLine();
+		this.addVerticalLine();
+		this.mode = 2;
+		this.initDots();
+	}
+
 	this.initDots = function(){
 		this.dotsarr = [];
 		var temparr = [];
@@ -109,10 +124,56 @@ function Game(stage,xocolor,doc){
 		}
 	}
 
+	this.checkVerticalGame = function(){
+		var correct = true;
+		for (var x = 0; x<this.gridwidth; x++){
+			for (var y = 0; y<this.gridheight/2; y++){
+				if (this.dotsarr[x][y].colour!=this.dotsarr[x][(this.gridheight-1)-y].colour){
+					correct = false;
+				}
+			}
+		}
+		if (correct==true){
+			for (var x = 0; x<this.gridwidth; x++){
+				for (var y = 0; y<this.gridheight; y++){
+					this.dotsarr[x][y].clickable = false;
+					this.dotsarr[x][y].showSmile();
+				}
+			}
+		}
+	}
+
+	this.checkBilateralGame = function(){
+		var correct = true;
+		for (var x = 0; x<this.gridwidth/2; x++){
+			for (var y = 0; y<this.gridheight/2; y++){
+				if (this.dotsarr[x][y].colour!=this.dotsarr[(this.gridwidth-1)-x][y].colour ||
+					this.dotsarr[x][y].colour!=this.dotsarr[x][(this.gridheight-1)-y].colour ||
+					this.dotsarr[x][y].colour!=this.dotsarr[(this.gridwidth-1)-x][(this.gridheight-1)-y].colour){
+					correct = false;
+				}
+			}
+		}
+		if (correct==true){
+			for (var x = 0; x<this.gridwidth; x++){
+				for (var y = 0; y<this.gridheight; y++){
+					this.dotsarr[x][y].clickable = false;
+					this.dotsarr[x][y].showSmile();
+				}
+			}
+		}
+	}
+
 	this.checkColours = function(){
 		switch(this.mode) {
 			case 0:
 				this.checkHorizontalGame();
+				break;
+			case 1:
+				this.checkVerticalGame();
+				break;
+			case 2:
+				this.checkBilateralGame();
 				break;
 		}
 	}
