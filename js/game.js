@@ -377,9 +377,9 @@ function Game(stage,xocolor,doc,datastore,activity){
 		this.circleswidth = this.radius*2*this.gridwidth+this.margin*(this.gridwidth+1);
 		this.circlesheight = this.radius*2*this.gridheight+this.margin*(this.gridheight+1);
 		console.log(data);
-		if (isdata==false){
+		if (isdata==false||data==null){
 			this.initHorizontalGame();
-		} else if (data != null){
+		} else {
 			//mode, dotsarr (as colour index), robot on/off, game over, buddy
 			if (data.buddy == true){
 				this.colours = this.buddy;
