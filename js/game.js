@@ -109,7 +109,15 @@ function Game(stage,xocolor,doc,datastore,activity){
 		}
 	}
 
+	this.setBuddyStyle = function(){
+		var buddyicon = doc.getElementById("buddy-button");
+		buddyicon.style.backgroundColor = "#808080";
+		var rainbowicon = doc.getElementById("rainbow-button");
+		rainbowicon.removeAttribute("style");
+	}
+
 	this.initBuddy = function(){
+		this.setBuddyStyle();
 		this.colours = this.buddy;
 		switch(this.mode) {
 			case 0:
@@ -124,7 +132,15 @@ function Game(stage,xocolor,doc,datastore,activity){
 		}
 	}
 
+	this.setRainbowStyle = function(){
+		var buddyicon = doc.getElementById("buddy-button");
+		buddyicon.removeAttribute("style");
+		var rainbowicon = doc.getElementById("rainbow-button");
+		rainbowicon.style.backgroundColor = "#808080";
+	}
+
 	this.initRainbow = function(){
+		this.setRainbowStyle();
 		this.colours = this.rainbow;
 		switch(this.mode) {
 			case 0:
@@ -414,6 +430,11 @@ function Game(stage,xocolor,doc,datastore,activity){
 			} else {
 				this.robotOff();
 			}
+		}
+		if (this.colours==this.buddy){
+			this.setBuddyStyle();
+		} else {
+			this.setRainbowStyle();
 		}
 	}
 }

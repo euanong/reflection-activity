@@ -44,14 +44,20 @@ function SymmetryDot(stage,clickable,x,y,radius,colours,index,game,xpos,ypos){
 		var s = new createjs.Shape();
 		var g = s.graphics;
 		var scale = 150;
+		var colour = "";
+		if (this.colours[this.colour]=="#000"||this.colours[this.colour]=="#000000"){
+			colour = "#FFFFFF";
+		} else {
+			colour = "#000000";
+		}
 		g.setStrokeStyle(10/scale*this.radius, 'round', 'round');
-		g.beginStroke("#000");
-		g.beginFill("#FC0");
+		g.beginStroke(colour);
+		g.beginFill();
 		g.drawCircle(0, 0, 100/scale*this.radius);
 		g.beginFill();
 		g.arc(0, 0, 60/scale*this.radius, 0, Math.PI);
 		g.beginStroke();
-		g.beginFill("#000");
+		g.beginFill(colour);
 		g.drawCircle(-30/scale*this.radius, -30/scale*this.radius, 15/scale*this.radius);
 		g.drawCircle(30/scale*this.radius, -30/scale*this.radius, 15/scale*this.radius);
 		s.x = this.circle.x;
