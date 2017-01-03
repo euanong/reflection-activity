@@ -57,7 +57,7 @@ function SymmetryDot(stage,clickable,x,y,radius,colours,index,game,xpos,ypos){
 		s.x = this.circle.x;
 		s.y = this.circle.y;
 		stage.addChild(s);
-		console.log(s);
+		//console.log(s);
 	}
 
 	this.init = function(){

@@ -1,4 +1,4 @@
-function Game(stage,xocolor,doc){
+function Game(stage,xocolor,doc,datastore,activity){
 	this.margin = 0;
 	//These must be even
 	this.gridwidth = 10;
@@ -15,8 +15,10 @@ function Game(stage,xocolor,doc){
 	this.rainbow = ['#FFFFFF','#000000','#FF0000','#FF8000','#FFFF00','#00FF00','#00FFFF','#0000FF','#FF00FF'];
 	this.colours = this.buddy;
 	this.robot = false;
+	this.gameOver = false;
 	//0 = horizontal, 1 = vertical, 2 = bilateral
 
+	//Helper functions
 	this.radiusFromX = function(){
 		this.margin = 1/50*stage.canvas.width;
 		var diameter = (stage.canvas.width-(this.margin*(this.gridwidth+1)))/this.gridwidth;
@@ -68,27 +70,43 @@ function Game(stage,xocolor,doc){
 		stage.addChild(this.horizontalline);
 	}
 
+	//Game Inits
 
-	this.initHorizontalGame = function(){
+	this.initHorizontalGame = function(colours=false){
+		this.gameOver = false;
 		this.removeLines();
 		this.addVerticalLine();
 		this.mode = 0;
-		this.initDots();
+		if (colours==false){
+			this.initDots();
+		} else {
+			this.initDotsFromSave(colours);
+		}
 	}
 
-	this.initVerticalGame = function(){
+	this.initVerticalGame = function(colours=false){
+		this.gameOver = false;
 		this.removeLines();
 		this.addHorizontalLine();
 		this.mode = 1;
-		this.initDots();
+		if (colours==false){
+			this.initDots();
+		} else {
+			this.initDotsFromSave(colours);
+		}
 	}
 
-	this.initBilateralGame = function(){
+	this.initBilateralGame = function(colours=false){
+		this.gameOver = false;
 		this.removeLines();
 		this.addHorizontalLine();
 		this.addVerticalLine();
 		this.mode = 2;
-		this.initDots();
+		if (colours==false){
+			this.initDots();
+		} else {
+			this.initDotsFromSave(colours);
+		}
 	}
 
 	this.initBuddy = function(){
@@ -143,6 +161,30 @@ function Game(stage,xocolor,doc){
 		console.log(this.dotsarr);
 	}
 
+	this.initDotsFromSave = function(colours){
+		this.dotsarr = [];
+		var temparr = [];
+		var incr = (this.radius*2+this.margin);
+		var xp = 0;
+		var yp = 0;
+		for (var x = (stage.canvas.width-this.circleswidth)/2+this.margin; x<(stage.canvas.width+this.circleswidth)/2; x+=incr){
+			temparr = [];
+			yp = 0;
+			for (var y = this.margin; y<this.circlesheight-this.margin; y+=incr){
+				var s = new SymmetryDot(stage,true,x+this.radius,y+this.radius,this.radius,this.colours,colours[xp][yp],this,xp,yp);
+				s.init();
+				temparr.push(s);
+				//console.log(s);
+				yp++;
+			}
+			this.dotsarr.push(temparr);
+			xp++;
+		}
+		console.log(this.dotsarr);
+	}
+
+	//Game Logic
+
 	this.checkHorizontalGame = function(){
 		var correct = true;
 		for (var x = 0; x<this.gridwidth/2; x++){
@@ -155,6 +197,7 @@ function Game(stage,xocolor,doc){
 		if (correct==true){
 			for (var x = 0; x<this.gridwidth; x++){
 				for (var y = 0; y<this.gridheight; y++){
+					this.gameOver = true;
 					this.dotsarr[x][y].clickable = false;
 					this.dotsarr[x][y].showSmile();
 				}
@@ -174,6 +217,7 @@ function Game(stage,xocolor,doc){
 		if (correct==true){
 			for (var x = 0; x<this.gridwidth; x++){
 				for (var y = 0; y<this.gridheight; y++){
+					this.gameOver = true;
 					this.dotsarr[x][y].clickable = false;
 					this.dotsarr[x][y].showSmile();
 				}
@@ -195,6 +239,7 @@ function Game(stage,xocolor,doc){
 		if (correct==true){
 			for (var x = 0; x<this.gridwidth; x++){
 				for (var y = 0; y<this.gridheight; y++){
+					this.gameOver = true;
 					this.dotsarr[x][y].clickable = false;
 					this.dotsarr[x][y].showSmile();
 				}
@@ -215,6 +260,8 @@ function Game(stage,xocolor,doc){
 				break;
 		}
 	}
+
+	//Robot Functions
 
 	this.robotOff = function(){
 		var robo = doc.getElementById("robot-button");
@@ -266,7 +313,60 @@ function Game(stage,xocolor,doc){
 		this.dotsarr[(this.gridwidth-1)-x][(this.gridheight-1)-y].setColour(index);
 	}
 
+	//Save-related things
+
+	this.stop = function(){
+		//store mode, dotsarr (as colour index), robot on/off, game over, buddy
+		var arr = {};
+		arr.mode = this.mode;
+		var dots = [];
+		var temparr = [];
+		for (var x = 0; x<this.gridwidth; x++){
+			temparr = [];
+			for (var y = 0; y<this.gridheight; y++){
+				temparr.push(this.dotsarr[x][y].colour);
+			}
+			dots.push(temparr);
+		}
+		arr.dots = dots;
+		arr.robot = this.robot;
+		arr.gameOver = this.gameOver;
+		if (this.colours.length == this.buddy.length){
+			arr.buddy = true;
+		} else {
+			arr.buddy = false;
+		}
+		console.log(arr);
+		var js = JSON.stringify(arr);
+		activity.getDatastoreObject().setDataAsText(js);
+		activity.getDatastoreObject().save();
+	}
+
+	//Load-related things
+
 	this.init = function(){
+		activity.getDatastoreObject().getMetadata(this.init_canaccessdatastore.bind(this));
+	}
+
+	this.init_canaccessdatastore = function(error,mdata){
+		var d = new Date().getTime();
+		if (Math.abs(d-mdata.creation_time)<2000){
+			this.initActivity(false,[]);
+		} else {
+			activity.getDatastoreObject().loadAsText(this.init_getdatastore.bind(this));
+		}
+	}
+
+	this.init_getdatastore = function(error,metadata,data){
+		if (error==null&&data!=null){
+			data = JSON.parse(data);
+			this.initActivity(true,data);
+		} else {
+			this.initActivity(false,[]);
+		}
+	}
+
+	this.initActivity = function(isdata,data){
 		var r = this.canDoFromX();
 		if (r==false){
 			console.log("position based on y");
@@ -276,6 +376,40 @@ function Game(stage,xocolor,doc){
 		console.log(r);
 		this.circleswidth = this.radius*2*this.gridwidth+this.margin*(this.gridwidth+1);
 		this.circlesheight = this.radius*2*this.gridheight+this.margin*(this.gridheight+1);
-		this.initHorizontalGame();
+		console.log(data);
+		if (isdata==false){
+			this.initHorizontalGame();
+		} else if (data != null){
+			//mode, dotsarr (as colour index), robot on/off, game over, buddy
+			if (data.buddy == true){
+				this.colours = this.buddy;
+			} else {
+				this.colours = this.rainbow;
+			}
+			switch(data.mode) {
+			case 0:
+				this.initHorizontalGame(data.dots);
+				break;
+			case 1:
+				this.initVerticalGame(data.dots);
+				break;
+			case 2:
+				this.initBilateralGame(data.dots);
+				break;
+			}
+			if (data.gameOver == true){
+				for (var x = 0; x<this.gridwidth; x++){
+					for (var y = 0; y<this.gridheight; y++){
+						this.dotsarr[x][y].clickable = false;
+						this.dotsarr[x][y].showSmile();
+					}
+				}
+			}
+			if (data.robot == true){
+				this.robotOn();
+			} else {
+				this.robotOff();
+			}
+		}
 	}
 }
