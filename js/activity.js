@@ -36,13 +36,13 @@ function runactivity(act,doc,colors,env,datastore){
 		}
 	    g = new Game(stage,colors,doc,datastore,act);
 	    setTimeout(function(){ g.init(); }, 500);
+	    var hasBeenResized = false;
 	    window.addEventListener('resize', resizeCanvas, false);
 	    function resizeCanvas() {
-	    	g.stop();
-	        canvas.width = window.innerWidth;
-	        canvas.height = window.innerHeight-55;
-	        stage.update();
-	        location.reload();
+	    	if (hasBeenResized == false){
+	    		g.stop(true);
+	    		hasBeenResized = true;
+	    	}
 	    }
 	    var buddyButton = doc.getElementById("buddy-button");
         	buddyButton.addEventListener('click', function (a) {
@@ -76,7 +76,6 @@ function runactivity(act,doc,colors,env,datastore){
         window.addEventListener('activityStop', function (eve) {
         	eve.preventDefault();
 	        g.stop();
-	        act.close();
         });
 	}
     init();

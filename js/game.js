@@ -177,24 +177,28 @@ function Game(stage,xocolor,doc,datastore,activity){
 		console.log(this.dotsarr);
 	}
 
-	this.initDotsFromSave = function(colours){
+	this.initDotsFromSave = function(cols){
 		this.dotsarr = [];
 		var temparr = [];
 		var incr = (this.radius*2+this.margin);
-		var xp = 0;
-		var yp = 0;
-		for (var x = (stage.canvas.width-this.circleswidth)/2+this.margin; x<(stage.canvas.width+this.circleswidth)/2; x+=incr){
+		var xp = (stage.canvas.width-this.circleswidth)/2+this.margin;
+		var yp = this.margin;
+		console.log("colour array");
+		console.log(cols);
+		for (var x = 0; x<this.gridwidth; x++){
 			temparr = [];
-			yp = 0;
-			for (var y = this.margin; y<this.circlesheight-this.margin; y+=incr){
-				var s = new SymmetryDot(stage,true,x+this.radius,y+this.radius,this.radius,this.colours,colours[xp][yp],this,xp,yp);
+			yp = this.margin;
+			for (var y = 0; y<this.gridheight; y++){
+				console.log(x);
+				console.log(y);
+				var s = new SymmetryDot(stage,true,xp+this.radius,yp+this.radius,this.radius,this.colours,cols[x][y],this,x,y);
 				s.init();
 				temparr.push(s);
 				//console.log(s);
-				yp++;
+				yp+=incr;
 			}
 			this.dotsarr.push(temparr);
-			xp++;
+			xp+=incr;
 		}
 		console.log(this.dotsarr);
 	}
@@ -331,7 +335,7 @@ function Game(stage,xocolor,doc,datastore,activity){
 
 	//Save-related things
 
-	this.stop = function(){
+	this.stop = function(restart=false){
 		//store mode, dotsarr (as colour index), robot on/off, game over, buddy
 		var arr = {};
 		arr.mode = this.mode;
@@ -355,13 +359,22 @@ function Game(stage,xocolor,doc,datastore,activity){
 		console.log(arr);
 		var js = JSON.stringify(arr);
 		activity.getDatastoreObject().setDataAsText(js);
-		activity.getDatastoreObject().save();
+		if (restart == true){
+			activity.getDatastoreObject().save(function(){
+		        location.reload();
+	    	});
+		} else {
+			activity.getDatastoreObject().save(function(){
+				activity.close();
+			});
+		}
 	}
 
 	//Load-related things
 
 	this.init = function(){
 		console.log("init");
+		console.log(activity.getDatastoreObject());
 		activity.getDatastoreObject().getMetadata(this.init_canaccessdatastore.bind(this));
 	}
 
@@ -369,6 +382,7 @@ function Game(stage,xocolor,doc,datastore,activity){
 		console.log("datastore check");
 		var d = new Date().getTime();
 		if (Math.abs(d-mdata.creation_time)<2000){
+			console.log("Time too short");
 			this.initActivity(false,[]);
 		} else {
 			activity.getDatastoreObject().loadAsText(this.init_getdatastore.bind(this));
@@ -418,6 +432,7 @@ function Game(stage,xocolor,doc,datastore,activity){
 				break;
 			}
 			if (data.gameOver == true){
+				this.gameOver = true;
 				for (var x = 0; x<this.gridwidth; x++){
 					for (var y = 0; y<this.gridheight; y++){
 						this.dotsarr[x][y].clickable = false;
