@@ -345,10 +345,12 @@ function Game(stage,xocolor,doc,datastore,activity){
 	//Load-related things
 
 	this.init = function(){
+		console.log("init");
 		activity.getDatastoreObject().getMetadata(this.init_canaccessdatastore.bind(this));
 	}
 
 	this.init_canaccessdatastore = function(error,mdata){
+		console.log("datastore check");
 		var d = new Date().getTime();
 		if (Math.abs(d-mdata.creation_time)<2000){
 			this.initActivity(false,[]);
@@ -367,6 +369,8 @@ function Game(stage,xocolor,doc,datastore,activity){
 	}
 
 	this.initActivity = function(isdata,data){
+		console.log(isdata);
+		console.log(data);
 		var r = this.canDoFromX();
 		if (r==false){
 			console.log("position based on y");

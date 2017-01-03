@@ -35,7 +35,7 @@ function runactivity(act,doc,colors,env,datastore){
 		    stage.update();
 		}
 	    g = new Game(stage,colors,doc,datastore,act);
-	    g.init();
+	    setTimeout(function(){ g.init(); }, 500);
 	    window.addEventListener('resize', resizeCanvas, false);
 	    function resizeCanvas() {
 	    	g.stop();
