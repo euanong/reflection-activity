@@ -65,7 +65,7 @@ function Game(stage,xocolor,doc,datastore,activity){
 	this.addHorizontalLine = function(){
 		this.horizontalline = new createjs.Shape();
 		this.horizontalline.graphics.beginFill("#000000").drawRect(0,0,this.circleswidth-this.margin,this.margin/3);
-		this.horizontalline.x = this.margin/2;
+		this.horizontalline.x = (stage.canvas.width-this.circleswidth)/2+this.margin/2;
 		this.horizontalline.y = this.circlesheight/2-this.margin/6;
 		stage.addChild(this.horizontalline);
 	}
@@ -159,20 +159,23 @@ function Game(stage,xocolor,doc,datastore,activity){
 		this.dotsarr = [];
 		var temparr = [];
 		var incr = (this.radius*2+this.margin);
-		var xp = 0;
-		var yp = 0;
-		for (var x = (stage.canvas.width-this.circleswidth)/2+this.margin; x<(stage.canvas.width+this.circleswidth)/2; x+=incr){
+		var xp = (stage.canvas.width-this.circleswidth)/2+this.margin;
+		var yp = this.margin;
+
+		for (var x = 0; x<this.gridwidth; x++){
 			temparr = [];
-			yp = 0;
-			for (var y = this.margin; y<this.circlesheight-this.margin; y+=incr){
-				var s = new SymmetryDot(stage,true,x+this.radius,y+this.radius,this.radius,this.colours,Math.floor(Math.random()*this.colours.length),this,xp,yp);
+			yp = this.margin;
+			for (var y = 0; y<this.gridheight; y++){
+				console.log(x);
+				console.log(y);
+				var s = new SymmetryDot(stage,true,xp+this.radius,yp+this.radius,this.radius,this.colours,Math.floor(Math.random()*this.colours.length),this,x,y);
 				s.init();
 				temparr.push(s);
 				//console.log(s);
-				yp++;
+				yp+=incr;
 			}
 			this.dotsarr.push(temparr);
-			xp++;
+			xp+=incr;
 		}
 		console.log(this.dotsarr);
 	}
