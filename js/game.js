@@ -166,8 +166,8 @@ function Game(stage,xocolor,doc,datastore,activity){
 			temparr = [];
 			yp = this.margin;
 			for (var y = 0; y<this.gridheight; y++){
-				console.log(x);
-				console.log(y);
+				//console.log(x);
+				//console.log(y);
 				var s = new SymmetryDot(stage,true,xp+this.radius,yp+this.radius,this.radius,this.colours,Math.floor(Math.random()*this.colours.length),this,x,y);
 				s.init();
 				temparr.push(s);
@@ -177,7 +177,7 @@ function Game(stage,xocolor,doc,datastore,activity){
 			this.dotsarr.push(temparr);
 			xp+=incr;
 		}
-		console.log(this.dotsarr);
+		//console.log(this.dotsarr);
 	}
 
 	this.initDotsFromSave = function(cols){
@@ -186,14 +186,14 @@ function Game(stage,xocolor,doc,datastore,activity){
 		var incr = (this.radius*2+this.margin);
 		var xp = (stage.canvas.width-this.circleswidth)/2+this.margin;
 		var yp = this.margin;
-		console.log("colour array");
-		console.log(cols);
+		//console.log("colour array");
+		//console.log(cols);
 		for (var x = 0; x<this.gridwidth; x++){
 			temparr = [];
 			yp = this.margin;
 			for (var y = 0; y<this.gridheight; y++){
-				console.log(x);
-				console.log(y);
+				//console.log(x);
+				//console.log(y);
 				var s = new SymmetryDot(stage,true,xp+this.radius,yp+this.radius,this.radius,this.colours,cols[x][y],this,x,y);
 				s.init();
 				temparr.push(s);
@@ -203,7 +203,7 @@ function Game(stage,xocolor,doc,datastore,activity){
 			this.dotsarr.push(temparr);
 			xp+=incr;
 		}
-		console.log(this.dotsarr);
+		//console.log(this.dotsarr);
 	}
 
 	//Game Logic
@@ -381,11 +381,11 @@ function Game(stage,xocolor,doc,datastore,activity){
 		var go = this.gameOver;
 		var r = this.canDoFromX();
 		if (r==false){
-			console.log("position based on y");
+			//console.log("position based on y");
 			r = this.radiusFromY();
 		}
 		this.radius = r;
-		console.log(r);
+		//console.log(r);
 		this.circleswidth = this.radius*2*this.gridwidth+this.margin*(this.gridwidth+1);
 		this.circlesheight = this.radius*2*this.gridheight+this.margin*(this.gridheight+1);
 		var dots = [];
