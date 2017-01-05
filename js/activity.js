@@ -22,9 +22,8 @@ function runactivity(act,doc,colors,env,datastore){
 
 	function init(){
 		canvas = document.getElementById('actualcanvas');
-    	canvas.width = window.innerWidth; 
+		canvas.width = window.innerWidth; 
     	canvas.height = window.innerHeight-55;
-
     	stage = new createjs.Stage(canvas);
     	stage.update();
     	stage.mouseEventsEnabled = true;
@@ -39,10 +38,10 @@ function runactivity(act,doc,colors,env,datastore){
 	    var hasBeenResized = false;
 	    window.addEventListener('resize', resizeCanvas, false);
 	    function resizeCanvas() {
-	    	if (hasBeenResized == false){
-	    		g.stop(true);
-	    		hasBeenResized = true;
-	    	}
+	    	canvas.width = window.innerWidth; 
+    		canvas.height = window.innerHeight-55;
+    		stage.removeAllChildren();
+	    	g.resize();
 	    }
 	    var buddyButton = doc.getElementById("buddy-button");
         	buddyButton.addEventListener('click', function (a) {

@@ -373,6 +373,52 @@ function Game(stage,xocolor,doc,datastore,activity){
 		}
 	}
 
+	this.resize = function(){
+		this.circleswidth = 0;
+		this.circlesheight = 0;
+		this.radius = 0;
+		this.margin = 0;
+		var go = this.gameOver;
+		var r = this.canDoFromX();
+		if (r==false){
+			console.log("position based on y");
+			r = this.radiusFromY();
+		}
+		this.radius = r;
+		console.log(r);
+		this.circleswidth = this.radius*2*this.gridwidth+this.margin*(this.gridwidth+1);
+		this.circlesheight = this.radius*2*this.gridheight+this.margin*(this.gridheight+1);
+		var dots = [];
+		var temparr = [];
+		for (var x = 0; x<this.gridwidth; x++){
+			temparr = [];
+			for (var y = 0; y<this.gridheight; y++){
+				temparr.push(this.dotsarr[x][y].colour);
+			}
+			dots.push(temparr);
+		}
+		switch(this.mode) {
+			case 0:
+				this.initHorizontalGame(dots);
+				break;
+			case 1:
+				this.initVerticalGame(dots);
+				break;
+			case 2:
+				this.initBilateralGame(dots);
+				break;
+		}
+		if (go == true){
+			this.gameOver = true;
+			for (var x = 0; x<this.gridwidth; x++){
+				for (var y = 0; y<this.gridheight; y++){
+					this.dotsarr[x][y].clickable = false;
+					this.dotsarr[x][y].showSmile();
+				}
+			}
+		}
+	}
+
 	//Load-related things
 
 	this.init = function(){
