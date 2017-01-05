@@ -364,8 +364,8 @@ function Game(stage,xocolor,doc,datastore,activity){
 		activity.getDatastoreObject().setDataAsText(js);
 		if (restart == true){
 			activity.getDatastoreObject().save(function(){
-		        location.reload();
-	    	});
+				location.reload();
+			});
 		} else {
 			activity.getDatastoreObject().save(function(){
 				activity.close();
