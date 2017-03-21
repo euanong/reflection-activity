@@ -72,7 +72,8 @@ function Game(stage,xocolor,doc,datastore,activity){
 
 	//Game Inits
 
-	this.initHorizontalGame = function(colours=false){
+	this.initHorizontalGame = function(colours){
+		if (colours === undefined) colours=false;
 		this.gameOver = false;
 		this.removeLines();
 		this.addVerticalLine();
@@ -84,7 +85,8 @@ function Game(stage,xocolor,doc,datastore,activity){
 		}
 	}
 
-	this.initVerticalGame = function(colours=false){
+	this.initVerticalGame = function(colours){
+		if (colours === undefined) colours=false;
 		this.gameOver = false;
 		this.removeLines();
 		this.addHorizontalLine();
@@ -96,7 +98,8 @@ function Game(stage,xocolor,doc,datastore,activity){
 		}
 	}
 
-	this.initBilateralGame = function(colours=false){
+	this.initBilateralGame = function(colours){
+		if (colours === undefined) colours=false;
 		this.gameOver = false;
 		this.removeLines();
 		this.addHorizontalLine();
@@ -338,7 +341,8 @@ function Game(stage,xocolor,doc,datastore,activity){
 
 	//Save-related things
 
-	this.stop = function(restart=false){
+	this.stop = function(restart){
+		if (restart === undefined) restart=false;
 		//store mode, dotsarr (as colour index), robot on/off, game over, buddy
 		var arr = {};
 		arr.mode = this.mode;

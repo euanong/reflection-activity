@@ -25,3 +25,8 @@
 #robot-button {
   background-image: url(../icons/robot-off.svg);
 }
+
+#canvas {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
